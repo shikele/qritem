@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="email">Email</string>
+    <string name="signin">SignIn</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="scan_something">scan something</string>
+    <string name="log_out">Log out</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_in">Sign in</string>
+</resources>
