@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.budiyev.android.codescanner.*
 import com.example.myapplication.adaptors.RecycleViewAdaptor
@@ -35,10 +36,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var signOutButton: Button
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var itemsRecycleView: RecyclerView
     private lateinit var recycleViewAdapter: RecycleViewAdaptor
 
     private val recycleViewArr: ArrayList<ItemClass> = ArrayList()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +57,10 @@ class MainActivity : AppCompatActivity() {
         codeScanner = CodeScanner(this, codeScannerView)
         signOutButton = findViewById(R.id.sign_out_button)
 
-        recyclerView = findViewById(R.id.recycle_view_db_data)
         recycleViewAdapter = RecycleViewAdaptor(recycleViewArr)
+        itemsRecycleView = findViewById(R.id.item_recycle_view_db_data)
+        itemsRecycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        itemsRecycleView.adapter = recycleViewAdapter
 
 
         signOutButton.setOnClickListener(){
@@ -163,18 +167,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadDbData(decode:String) {
-        recycleViewArr.clear()
+
         db.collection(decode)
             .get()
             .addOnSuccessListener { result->
+                recycleViewArr.clear()
                 for (document in result) {
                     recycleViewArr.add(document.toObject(ItemClass::class.java))
                 }
-                Log.d("debug", "?$recycleViewArr")
+                Log.d("debug1", "?$recycleViewArr")
                 recycleViewAdapter.notifyDataSetChanged()
+                Log.d("debug1", "after change$")
             }
             .addOnFailureListener { exception ->
-                Log.w("debug", "Error getting documents.", exception)
+                Log.w("debug1", "Error getting documents.", exception)
             }
     }
 }

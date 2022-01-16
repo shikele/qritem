@@ -1,5 +1,6 @@
 package com.example.myapplication.adaptors
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,18 @@ class RecycleViewAdaptor(private val dataSet: ArrayList<ItemClass>) :
      * (custom ViewHolder).
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView
-
+        private val nameText: TextView = view.findViewById(R.id.name_text)
+        private val countText: TextView = view.findViewById(R.id.count_text)
+        private val bestBeforeText: TextView = view.findViewById(R.id.best_before_text)
         init {
             // Define click listener for the ViewHolder's View.
-            textView = view.findViewById(R.id.textView)
+        }
+        fun bind(qrStorageItem:ItemClass){
+            Log.d("debug1", qrStorageItem.toString())
+            nameText.text = qrStorageItem.name
+            countText.text = qrStorageItem.count.toString()
+            bestBeforeText.text = qrStorageItem.best_before.toDate().toString()
+
         }
     }
 
@@ -38,10 +46,14 @@ class RecycleViewAdaptor(private val dataSet: ArrayList<ItemClass>) :
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.textView.text = dataSet[position].name
+//        viewHolder.nameText.text = dataSet[position].name
+//        Log.d("debug1", dataSet.toString())
+        val qrStorageItem:ItemClass = dataSet[position]
+        viewHolder.bind(qrStorageItem)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+
 
 }
